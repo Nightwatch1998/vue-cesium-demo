@@ -41,7 +41,7 @@ module.exports = {
         components: path.resolve("src/components"),
         assets: path.resolve("src/assets"),
         views: path.resolve("src/views"),
-        cesium: path.resolve(__dirname, cesiumSource),
+        'cesium': path.resolve(__dirname, cesiumSource),
       },
     },
     plugins: [

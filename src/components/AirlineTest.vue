@@ -6,7 +6,7 @@ import * as Cesium from "cesium/Cesium";
 import * as widgets from "cesium/Widgets/widgets.css";
 
 export default {
-  name: 'AirLine',
+  name: 'AirlineTest',
   mounted () {
     // 加载Cesium官方数据需要使用token
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmMTRlZjRjMy04ZjExLTQ3ZjUtOThkZi1mOTgwMWNiNzgzNmIiLCJpZCI6NzEzMTQsImlhdCI6MTY1MTcwOTUzNn0.OehKrLuHoBGfaYIhVX_e4fCiVJucjaB6NUsgNQRgJDs'
@@ -89,6 +89,7 @@ export default {
 }
 }
 </script>
+
 <style scoped lang="scss">
 #container {
   width: 100%;
