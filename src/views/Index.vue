@@ -1,6 +1,6 @@
 <template>
   <div id="cesium-container">
-    <create-entity></create-entity>
+    <pipeline-demo></pipeline-demo>
   </div>
 </template>
 <script>
@@ -8,6 +8,7 @@
   import ProposedBuilding from '@/components/ProposedBuilding'
   import OnlyBuilding from '@/components/OnlyBuilding'
   import CreateEntity from '@/components/CreateEntity'
+  import PipelineDemo from '@/components/PipelineDemo'
 
   export default {
     name: 'Home',
@@ -16,6 +17,7 @@
       ProposedBuilding,
       OnlyBuilding,
       CreateEntity,
+      PipelineDemo
     },
     mounted () {
       
