@@ -6,6 +6,14 @@
     // import * as Cesium from 'cesium' //有语法提示,不能构建
     import * as Cesium from 'cesium/Cesium' //无语法提示,可以构建
     import * as widgets from "cesium/Widgets/widgets.css"
+    import power_line from '@/assets/pipeline_data/power_line.json'
+    import power_point from '@/assets/pipeline_data/power_point.json'
+    import drain_line from '@/assets/pipeline_data/drain_line.json'
+    import drain_point from '@/assets/pipeline_data/drain_point.json'
+    import water_supply_line from '@/assets/pipeline_data/water_supply_line.json'
+    import water_supply_point from '@/assets/pipeline_data/water_supply_point.json'
+    import { getCircleTubeModel,getSquareTubeModel} from '@/utils/getPolylineVolume.js'
+    import { dms2degree } from '@/utils/transform.js'
     import {ref, watch, onMounted} from 'vue'
 
     export default {
@@ -15,108 +23,123 @@
         setup(props){
             watch: {()=>data,()=>{}}
             onMounted(()=>{
+                // console.log(power_line)
                 const viewer = new Cesium.Viewer("container");
-
-                function computeCircle(radius) {
-                    const positions = [];
-                    for (let i = 0; i < 360; i++) {
-                        const radians = Cesium.Math.toRadians(i);
-                        positions.push(
-                        new Cesium.Cartesian2(
-                            radius * Math.cos(radians),
-                            radius * Math.sin(radians)
-                        )
-                        );
-                    }
-                    // console.log(positions)
-                    return positions;
-                }
-
-                function computeStar(arms, rOuter, rInner) {
-                    const angle = Math.PI / arms;
-                    const length = 2 * arms;
-                    const positions = new Array(length);
-                    for (let i = 0; i < length; i++) {
-                        const r = i % 2 === 0 ? rOuter : rInner;
-                        positions[i] = new Cesium.Cartesian2(
-                        Math.cos(i * angle) * r,
-                        Math.sin(i * angle) * r
-                        );
-                    }
-                    return positions;
-                }
-                const getRedTube = ()=>{
-                    const redTube = viewer.entities.add({
-                        name: "Red tube with rounded corners",
-                        polylineVolume: {
-                            // 传入经纬度,高度默认为0
-                            positions: Cesium.Cartesian3.fromDegreesArray([
-                                -85.0,
-                                32.0,
-                                -85.0,
-                                36.0,
-                                -89.0,
-                                36.0,
-                            ]),
-                            shape: computeCircle(5000.0),
-                            material: Cesium.Color.BLUE.withAlpha(0.5),
-                        },
-                    });
-                    return redTube
-                }
                 
-                const getGreenBox = ()=>{
-                    const greenBox = viewer.entities.add({
-                        name: "Green box with beveled corners and outline",
-                        polylineVolume: {
-                            positions: Cesium.Cartesian3.fromDegreesArrayHeights([
-                                -90.0,
-                                32.0,
-                                0.0,
-                                -90.0,
-                                36.0,
-                                100000.0,
-                                -94.0,
-                                36.0,
-                                0.0,
-                            ]),
-                            shape: [
-                                new Cesium.Cartesian2(-50000, -50000),
-                                new Cesium.Cartesian2(50000, -50000),
-                                new Cesium.Cartesian2(50000, 50000),
-                                new Cesium.Cartesian2(-50000, 50000),
-                            ],
-                            cornerType: Cesium.CornerType.ROUNDED,
-                            material: Cesium.Color.GREEN.withAlpha(0.5),
-                            outline: true,
-                            outlineColor: Cesium.Color.BLACK,
-                        },
-                    });
-                    return greenBox
+                // 定义管线材质及其他属性
+                const pipematerial = {
+                    "power":{
+                        "name":"电力管线",
+                        "material":Cesium.Color.GOLD.withAlpha(0.5)
+                    },
+                    "water_supply":{
+                        "name":"给水管线",
+                        "material":Cesium.Color.AQUA.withAlpha(0.5)
+                    },
+                    "drain":{
+                        "name":"排水管线",
+                        "material":Cesium.Color.SADDLEBROWN.withAlpha(0.5)
+                    }
                 }
-                
-                const getBlueStar = ()=>{
-                    const blueStar = viewer.entities.add({
-                        name: "Blue star with mitered corners and outline",
-                        polylineVolume: {
-                            positions: Cesium.Cartesian3.fromDegreesArrayHeights([
-                            -95.0,
-                            32.0,
-                            0.0,
-                            -95.0,
-                            36.0,
-                            100000.0,
-                            -99.0,
-                            36.0,
-                            200000.0,
-                            ]),
-                            shape: computeStar(7, 70000, 50000),
-                            cornerType: Cesium.CornerType.MITERED,
-                            material: Cesium.Color.BLUE,
-                        },
-                    });
+                // 对管点数据重新加工,使其可以通过点号访问
+                const reshapePoint = (pointList)=>{
+                    let pointJson = {}
+                    pointList.forEach(item=>{
+                        let pointID = item["物探点号"]
+                        pointJson[pointID] = item
+                    })
+                    return pointJson
                 }
-                const redTube = getRedTube()
+                // 根据json数据创建格式化管线数据
+                const getAllPipeline = (pipeOption,pointList,lineList)=>{
+                    let {name,material} = pipeOption
+                    let pipes = []
+                    lineList.forEach(item => {
+                        let routes = []
+                        let startID = item["起始点号"]
+                        let endID = item["终止点号"]
+                        let size = {}
+                        if(item["管径"].indexOf("X")!==-1){
+                            let _size = item["管径"].split("X")
+                            size = {
+                                width:_size[0]/1000,
+                                height:_size[1]/1000
+                            }
+                        }else{
+                            size = {
+                                width:500/1000,
+                                height:500/1000
+                            }
+                        }
+                        
+                        routes.push(parseFloat(pointList[startID]["LON"]))
+                        routes.push(parseFloat(pointList[startID]["LAT"]))
+                        routes.push(parseFloat(pointList[startID]["H"]))
+                        routes.push(parseFloat(pointList[endID]["LON"]))
+                        routes.push(parseFloat(pointList[endID]["LAT"]))
+                        routes.push(parseFloat(pointList[endID]["H"]))
+                        pipes.push({
+                            name,
+                            routes,
+                            radius:parseFloat(item["管径"])/1000,
+                            material,
+                            size
+                        })
+                    });
+                    return pipes
+                }
+                // 电力管线
+                const powerPoint = reshapePoint(power_point["RECORDS"])
+                const powerPipelines = getAllPipeline(pipematerial["power"],powerPoint,power_line["RECORDS"])
+                // console.log(powerPipelines)
+                // 给水管线
+                const waterSupplyPoint = reshapePoint(water_supply_point["RECORDS"])
+                const waterSupplyPipelines = getAllPipeline(pipematerial["water_supply"],waterSupplyPoint,water_supply_line["RECORDS"])
+                // console.log(waterSupplyPipelines)
+                // 排水管线
+                const drainPoint = reshapePoint(drain_point["RECORDS"])
+                const drainPipelines = getAllPipeline(pipematerial["drain"],drainPoint,drain_line["RECORDS"])
+                // console.log(drainPipelines)
+                // 管线模型测试用例
+                const singleTube = {
+                    routes:[
+                        -85.0,
+                        32.0,
+                        0,
+                        -85.0,
+                        36.0,
+                        0,
+                        -89.0,
+                        36.0,
+                        0,
+                    ],
+                    radius:5000,
+                    material:''
+                }
+
+                // 创建管线模型
+                // 给排水管线圆形截面
+                waterSupplyPipelines.forEach(item=>{
+                    let tube = getCircleTubeModel(item)
+                    viewer.entities.add(tube)
+                })
+
+                drainPipelines.forEach(item=>{
+                    let tube = getCircleTubeModel(item)
+                    viewer.entities.add(tube)
+                })
+
+                // 电力管线方形截面
+                powerPipelines.forEach(item=>{
+                    let tube = getSquareTubeModel(item)
+                    viewer.entities.add(tube)
+                })
+
+
+
+                // let redTube = getTubeModel(singleTube)
+                // // console.log(redTube)
+                // viewer.entities.add(redTube)
 
                 // 点击显示XYZ坐标
                 var handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas);
@@ -143,8 +166,6 @@
                         roll:parseFloat(roll.toFixed(2)),
                     }
                     console.log(campos)
-
-
                 }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
                 // 相机位置测试
@@ -160,9 +181,9 @@
                 // viewer.camera.flyTo({
                 //     destination: Cesium.Cartesian3.fromDegrees(CP.lon, CP.lat, CP.height),
                 //     orientation: {
-                //         heading: CP.heading,
-                //         pitch: CP.pitch,
-                //         roll: CP.roll,
+                //         heading: Cesium.Math.toRadians(CP.heading),
+                //         pitch: Cesium.Math.toRadians(CP.pitch),
+                //         roll: Cesium.Math.toRadians(CP.roll),
                 //     },
                 // });
             })
