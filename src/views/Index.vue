@@ -2,7 +2,9 @@
   <div id="cesium-container">
     <!-- <pipeline-demo></pipeline-demo> -->
     <!-- <only-building></only-building> -->
-    <war-ship></war-ship>
+    <!-- <war-ship></war-ship> -->
+    <!-- <button-hide></button-hide> -->
+    <add-shape></add-shape>
   </div>
 </template>
 <script>
@@ -12,6 +14,8 @@
   import CreateEntity from '@/components/CreateEntity'
   import PipelineDemo from '@/components/PipelineDemo'
   import WarShip from '@/components/WarShip.vue'
+  import ButtonHide from '@/components/beginner/ButtonHide.vue'
+  import AddShape from '@/components/beginner/AddShape.vue'
 
   export default {
     name: 'Home',
@@ -21,7 +25,9 @@
       OnlyBuilding,
       CreateEntity,
       PipelineDemo,
-      WarShip
+      WarShip,
+      ButtonHide,
+      AddShape
     },
     mounted () {
       

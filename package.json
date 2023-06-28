@@ -1,6 +1,6 @@
 {
-  "name": "vue-cesium-pipeline",
-  "version": "0.1.0",
+  "name": "vue-cesium-demo",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -17,7 +17,6 @@
   },
   "devDependencies": {
     "@open-wc/webpack-import-meta-loader": "^0.4.7",
-    "@types/cesium": "^1.70.0",
     "@vue/cli-plugin-babel": "~4.5.15",
     "@vue/cli-plugin-eslint": "~4.5.15",
     "@vue/cli-plugin-router": "~4.5.15",
@@ -36,20 +35,7 @@
     "sass": "^1.26.5",
     "sass-loader": "^10.1.0"
   },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/vue3-essential",
-      "@vue/standard"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {}
-  },
+  "eslintConfig": {},
   "browserslist": [
     "> 1%",
     "last 2 versions",

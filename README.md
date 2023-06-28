@@ -1,13 +1,14 @@
 # vue-cesium-pipeline
-vue+cesium实现管线数据可视化的demo
+
+vue+cesium 实现管线数据可视化的 demo
 
 ### 问题
-1. 加载不出球是因为使用的默认的access_token,在组件使用时配置Cesium.Ion.defaultAccessToken = 'xxx'
-2. 也有可能是使用的地图需要vpn
 
-## 用IDEA打开
+1. 加载不出球是因为使用的默认的 access_token,在组件使用时配置 Cesium.Ion.defaultAccessToken = 'xxx',有时候 Cesium.Ion 信号不好，需要 vpn
+2. node-sass@4.14.1依赖 node14 版本
 
 ## 项目文档目录结构
+
 ```
 vue-cesium-pipeline
 ├── README.md
@@ -28,5 +29,3 @@ vue-cesium-pipeline
 │   └── views
 └── vue.config.js
 ```
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

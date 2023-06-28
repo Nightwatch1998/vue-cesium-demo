@@ -3,7 +3,6 @@
 </template>
 
 <script>
-    // import * as Cesium from 'cesium' //有语法提示,不能构建
     import * as Cesium from 'cesium' //无语法提示,可以构建
     import {ref, watch, onMounted} from 'vue'
 
