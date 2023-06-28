@@ -4,8 +4,7 @@
 </template>
 
 <script>
-    import * as Cesium from "cesium/Cesium";
-    import * as widgets from "cesium/Widgets/widgets.css";
+    import * as Cesium from "cesium";
     import {ref, watch, onMounted} from 'vue'
 
     export default {

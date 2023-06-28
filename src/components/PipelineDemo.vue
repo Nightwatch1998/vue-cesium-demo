@@ -3,9 +3,7 @@
 </template>
 
 <script>
-    // import * as Cesium from 'cesium' //有语法提示,不能构建
-    import * as Cesium from 'cesium/Cesium' //无语法提示,可以构建
-    import * as widgets from "cesium/Widgets/widgets.css"
+    import * as Cesium from 'cesium' 
     import power_line from '@/assets/pipeline_data/power_line.json'
     import power_point from '@/assets/pipeline_data/power_point.json'
     import drain_line from '@/assets/pipeline_data/drain_line.json'
@@ -24,6 +22,7 @@
             watch: {()=>data,()=>{}}
             onMounted(()=>{
                 // console.log(power_line)
+                Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmMTRlZjRjMy04ZjExLTQ3ZjUtOThkZi1mOTgwMWNiNzgzNmIiLCJpZCI6NzEzMTQsImlhdCI6MTY1MTcwOTUzNn0.OehKrLuHoBGfaYIhVX_e4fCiVJucjaB6NUsgNQRgJDs';
                 const viewer = new Cesium.Viewer("container");
                 
                 // 定义管线材质及其他属性

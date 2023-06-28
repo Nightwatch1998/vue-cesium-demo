@@ -1,6 +1,8 @@
 <template>
   <div id="cesium-container">
-    <pipeline-demo></pipeline-demo>
+    <!-- <pipeline-demo></pipeline-demo> -->
+    <!-- <only-building></only-building> -->
+    <war-ship></war-ship>
   </div>
 </template>
 <script>
@@ -9,6 +11,7 @@
   import OnlyBuilding from '@/components/OnlyBuilding'
   import CreateEntity from '@/components/CreateEntity'
   import PipelineDemo from '@/components/PipelineDemo'
+  import WarShip from '@/components/WarShip.vue'
 
   export default {
     name: 'Home',
@@ -17,7 +20,8 @@
       ProposedBuilding,
       OnlyBuilding,
       CreateEntity,
-      PipelineDemo
+      PipelineDemo,
+      WarShip
     },
     mounted () {
       

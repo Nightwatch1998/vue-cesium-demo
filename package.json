@@ -10,12 +10,14 @@
   "dependencies": {
     "cesium": "^1.92.0",
     "core-js": "^3.6.5",
+    "strip-pragma-loader": "^1.0.1",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
     "@open-wc/webpack-import-meta-loader": "^0.4.7",
+    "@types/cesium": "^1.70.0",
     "@vue/cli-plugin-babel": "~4.5.15",
     "@vue/cli-plugin-eslint": "~4.5.15",
     "@vue/cli-plugin-router": "~4.5.15",

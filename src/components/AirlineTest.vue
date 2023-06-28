@@ -2,8 +2,7 @@
   <div id="container"></div>
 </template>
 <script>
-import * as Cesium from "cesium/Cesium";
-import * as widgets from "cesium/Widgets/widgets.css";
+import * as Cesium from "cesium";
 
 export default {
   name: 'AirlineTest',
