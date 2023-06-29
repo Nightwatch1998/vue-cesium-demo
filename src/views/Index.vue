@@ -4,7 +4,8 @@
     <!-- <only-building></only-building> -->
     <!-- <war-ship></war-ship> -->
     <!-- <button-hide></button-hide> -->
-    <add-shape></add-shape>
+    <!-- <tile-set></tile-set> -->
+    <camera-control></camera-control>
   </div>
 </template>
 <script>
@@ -15,7 +16,7 @@
   import PipelineDemo from '@/components/PipelineDemo'
   import WarShip from '@/components/WarShip.vue'
   import ButtonHide from '@/components/beginner/ButtonHide.vue'
-  import AddShape from '@/components/beginner/AddShape.vue'
+  import CameraControl from '@/components/beginner/CameraControl.vue'
 
   export default {
     name: 'Home',
@@ -27,7 +28,7 @@
       PipelineDemo,
       WarShip,
       ButtonHide,
-      AddShape
+      CameraControl
     },
     mounted () {
       

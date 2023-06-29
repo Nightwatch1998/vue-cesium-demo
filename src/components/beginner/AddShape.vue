@@ -16,6 +16,7 @@
       onMounted(() => {
         Cesium.Ion.defaultAccessToken = DEFAULT_ACCESS_TOKEN
         var viewer = new Cesium.Viewer('container');
+        // 添加几何图形
         var redBox = viewer.entities.add({
           name: "Red box with black outline",
           position: Cesium.Cartesian3.fromDegrees(118, 38, 300.0),
