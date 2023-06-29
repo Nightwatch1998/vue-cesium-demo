@@ -8,7 +8,6 @@
   import { DEFAULT_ACCESS_TOKEN } from '@/utils/const.js'
 
   export default {
-    name: 'AddShape',
     components: {},
     props: {},
     setup(props) {
