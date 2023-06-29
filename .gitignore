@@ -2,6 +2,7 @@
 node_modules
 /dist
 
+/public/Scene
 
 # local env files
 .env.local
