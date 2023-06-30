@@ -1,20 +1,19 @@
 <template>
   <div id="cesium-container">
-    <add-layer></add-layer>
+    <!-- <add-layer></add-layer> -->
+    <add-terrain-layer></add-terrain-layer>
   </div>
 </template>
 <script>
 
-  import AddLayer from '@/components/beginner/AddLayer'
+  import AddTerrainLayer from '@/components/beginner/AddTerrainLayer'
 
   export default {
     name: 'Home',
     components:{
-      AddLayer
+      AddTerrainLayer
     },
-    mounted () {
-      
-    }
+    mounted () {}
   }
 </script>
 <style scoped lang="scss">
