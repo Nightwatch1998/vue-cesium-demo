@@ -5,7 +5,7 @@
 </template>
 <script>
 
-  import AddLayer from '@/components/beginner/AddLayer.vue'
+  import AddLayer from '@/components/beginner/AddLayer'
 
   export default {
     name: 'Home',
