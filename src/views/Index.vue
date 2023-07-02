@@ -1,17 +1,15 @@
 <template>
   <div id="cesium-container">
-    <!-- <add-layer></add-layer> -->
-    <add-terrain-layer></add-terrain-layer>
+    <compare></compare>
   </div>
 </template>
 <script>
 
-  import AddTerrainLayer from '@/components/beginner/AddTerrainLayer'
+  import Compare from "@/components/DataSource/3dtiles/Compare.vue"
 
   export default {
-    name: 'Home',
     components:{
-      AddTerrainLayer
+      Compare
     },
     mounted () {}
   }
