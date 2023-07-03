@@ -1,15 +1,18 @@
 <template>
   <div id="cesium-container">
-    <compare></compare>
+    <!-- <ion-resource></ion-resource> -->
+    <vector-data></vector-data>
   </div>
 </template>
 <script>
 
-  import Compare from "@/components/DataSource/3dtiles/Compare.vue"
+  import IonResource from "@/components/DataSource/3dtiles/IonResource.vue"
+  import VectorData from "@/components/DataSource/VectorData.vue"
 
   export default {
     components:{
-      Compare
+      IonResource,
+      VectorData
     },
     mounted () {}
   }

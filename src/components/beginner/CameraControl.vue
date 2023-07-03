@@ -25,7 +25,7 @@
             roll: Cesium.Math.toRadians(0)
           }
         })
-
+        
         // setView2：Rectangle方式,矩形区域完全可见
         viewer.camera.setView({
           destination: Cesium.Rectangle.fromDegrees(110.0,30.0,120.0,40.0),

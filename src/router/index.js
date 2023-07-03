@@ -6,20 +6,9 @@ const routes = [
     component: () => import('../views/Index.vue')
   },
   {
-    path: '/about',
-    name: 'About',
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  },
-  /** 添加一个页面 **/
-  {
     path: '/index',
     name: 'Index',
     component: () => import('../views/Index.vue')
-  },
-  {
-    path: '/test',
-    name: 'Test',
-    component: () => import('../views/Test.vue')
   },
   {
     path: '/ship',
