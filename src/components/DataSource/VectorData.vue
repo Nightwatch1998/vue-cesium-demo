@@ -14,6 +14,7 @@
     setup(props) {
       watch: { () => data, () => {} }
       onMounted(() => {
+        // 原生的方式加载地理信息数据
         Cesium.Ion.defaultAccessToken = DEFAULT_ACCESS_TOKEN
         var viewer = new Cesium.Viewer('container',{
           // imageryProvider: tdtProvider

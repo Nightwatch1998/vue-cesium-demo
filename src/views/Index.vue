@@ -1,18 +1,24 @@
 <template>
   <div id="cesium-container">
     <!-- <ion-resource></ion-resource> -->
-    <vector-data></vector-data>
+    <!-- <vector-data></vector-data> -->
+    <!-- <geometry></geometry> -->
+    <model></model>
   </div>
 </template>
 <script>
 
   import IonResource from "@/components/DataSource/3dtiles/IonResource.vue"
   import VectorData from "@/components/DataSource/VectorData.vue"
+  import Geometry from "@/components/DataSource/CZML/Geometry.vue"
+  import Model from "@/components/DataSource/CZML/Model.vue"
 
   export default {
     components:{
       IonResource,
-      VectorData
+      VectorData,
+      Geometry,
+      Model
     },
     mounted () {}
   }
