@@ -58,11 +58,37 @@ const tdtLabelProvider = new Cesium.WebMapTileServiceImageryProvider({
   credit: "天地图" // 来源标识
 })
 
+// 本地发布的WMS服务,layers可选countries、SR_50M、basemap
+const geoserverWMSProvider = new Cesium.WebMapServiceImageryProvider({
+  url: 'http://localhost:8080/geoserver/huyadish/wms',
+  layers: 'huyadish:countries',
+  parameters: {
+    service: 'WMS',
+    // 这里要看geoserver发布服务支持的格式,png、gif、jpeg
+    format: 'image/png', 
+    // 这里1.1.1和1.1.0均可
+    version: '1.1.1', 
+    transparent: true
+  }
+})
+
+// 本地发布的WMTS服务
+const geoserverWMTSProvider = new Cesium.WebMapTileServiceImageryProvider({
+  url: 'http://localhost:8080/geoserver/gwc/service/wmts/rest/huyadish:basemap/{style}/{TileMatrixSet}/{TileMatrixSet}:{TileMatrix}/{TileRow}/{TileCol}?format=image/png',
+  layer: 'huyadish:basemap',
+  style: '',
+  format: 'image/png',
+  tileMatrixSetID: 'EPSG:900913', //EPSG需要修改为谷歌墨卡托投影EPSG:900913
+  maximumLevel: 10,
+})
+
 export {
   bingMapProvider,
   esriProvider,
   mapboxProvider,
   amapImageryProvider,
   tdtProvider,
-  tdtLabelProvider
+  tdtLabelProvider,
+  geoserverWMSProvider,
+  geoserverWMTSProvider
 }

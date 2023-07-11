@@ -7,7 +7,8 @@ vue+cesium  demo
 1. 加载不出球是因为使用的默认的 access_token,在组件使用时配置 Cesium.Ion.defaultAccessToken = 'xxx',有时候 Cesium.Ion 信号不好，需要 vpn
 2. node-sass@4.14.1依赖 node14 版本
 3. TerrainProvider 中的 url 参数在 1.104 版本被弃用，之后代替的是 fromUrl 并搭配 await
-4.  加载Cesium Ion资源要使用最新的API  Cesium.Cesium3DTileset.fromIonAssetId 异步方式加载
+4. 加载Cesium Ion资源要使用最新的API  Cesium.Cesium3DTileset.fromIonAssetId 异步方式加载
+5. 请求本地Geoserver发布的地图服务会有跨域问题
 
 ```js
 // 2023年7月3日为止最新的版本是1.106

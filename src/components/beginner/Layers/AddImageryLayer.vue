@@ -7,6 +7,7 @@
   import { ref, watch, onMounted } from 'vue'
   import { DEFAULT_ACCESS_TOKEN } from '@/utils/const.js'
   import { tdtProvider }  from '@/utils/imageryProviders.js'
+  import { geoserverWMSProvider, geoserverWMTSProvider }  from '@/utils/imageryProviders.js'
 
   export default {
     components: {},
@@ -18,7 +19,7 @@
         // 离线地图
         
         var viewer = new Cesium.Viewer('container',{
-          imageryProvider: tdtProvider,
+          imageryProvider: geoserverWMTSProvider,
           baseLayerPicker: false, // 同时要禁用图层选择器
         })
 
