@@ -5,17 +5,20 @@
     <!-- <geometry></geometry> -->
     <!-- <model></model> -->
     <!-- <screen-space-event></screen-space-event> -->
-    <add-imagery-layer></add-imagery-layer>
+    <!-- <add-imagery-layer></add-imagery-layer> -->
+    <!-- <add-gltf></add-gltf> -->
+    <local-data></local-data>
   </div>
 </template>
 <script>
-
+  import AddGltf from "@/components/DataSource/AddGltf.vue"
   import IonResource from "@/components/DataSource/3dtiles/IonResource.vue"
   import VectorData from "@/components/DataSource/VectorData.vue"
   import Geometry from "@/components/DataSource/CZML/Geometry.vue"
   import Model from "@/components/DataSource/CZML/Model.vue"
   import ScreenSpaceEvent from "@/components/Events/ScreenSpaceEvent.vue"
   import AddImageryLayer from '@/components/beginner/Layers/AddImageryLayer.vue'
+  import LocalData from '@/components/DataSource/3dtiles/LocalData.vue'
 
   export default {
     components:{
@@ -24,7 +27,9 @@
       Geometry,
       Model,
       ScreenSpaceEvent,
-      AddImageryLayer
+      AddImageryLayer,
+      AddGltf,
+      LocalData
     },
     mounted () {}
   }

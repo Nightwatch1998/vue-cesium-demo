@@ -18,7 +18,7 @@
             shouldAnimate: true
         });
         // entity位置
-        var position = Cesium.Cartesian3.fromDegrees(-123.0744619, 44.0514706, 2)
+        var position = Cesium.Cartesian3.fromDegrees(-123.0744619, 44.0514706, 20)
 
         // 相对于平面坐标系的姿态
         var heading = Cesium.Math.toRadians(0)  // 方位角
@@ -37,6 +37,7 @@
           model: {
             // uri: "data/models/Cesium_Air.glb"
             uri: "data/models/ship.glb"
+            // uri: "data/models/MiConv.com__line_50.gltf"
           },
         })
         viewer.zoomTo(entity)
