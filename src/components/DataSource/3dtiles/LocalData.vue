@@ -20,24 +20,27 @@
         var scene = viewer.scene
         // 允许显示地下
         scene.screenSpaceCameraController.enableCollisionDetection = false
-        // 加载数据集
+        // 加载数据集  默认位置 117.52160102,38.56303501
         var tileset = viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
             // url: 'Scene/testm3DTiles.json',
-            url: 'Scene/pipeline1/tileset.json',
+            // url: 'Scene/GD/tileset.json',
+            url: 'Scene/ALL/tileset.json',
             maximumScreenSpaceError: 2,
             maximumNumberOfLoadedTiles: 1000,
         }));
         
 
-
         // 计算偏移量tileset.boundingSphere,在3dtile加载完毕才能访问
-        function changeHeight(tileset){
+        function translation(tileset){
           // 笛卡尔坐标转大地坐标
           var cartographic = Cesium.Cartographic.fromCartesian(tileset.boundingSphere.center)
+          // console.log(cartographic)
           // 模型在地表中心位置
           var surface = Cesium.Cartesian3.fromRadians(cartographic.longitude,cartographic.latitude,0)
           // 目标位置
-          var target = Cesium.Cartesian3.fromRadians(cartographic.longitude,cartographic.latitude,1000)
+          var lon = Cesium.Math.toRadians(117.87388205)
+          var lat = Cesium.Math.toRadians(38.94105403)
+          var target = Cesium.Cartesian3.fromRadians(lon,lat,0)
           // 平移变换
           var offset = Cesium.Cartesian3.subtract(target,surface,new Cesium.Cartesian3())
           // 应用变换
@@ -55,7 +58,7 @@
           var moveto_matrix = Cesium.Matrix4.fromTranslation(moveto_vec)
 
           // 定义旋转方向
-          var angleX = Cesium.Math.toRadians(100)
+          var angleX = Cesium.Math.toRadians(0)
           var angleY = Cesium.Math.toRadians(0)
           var angleZ = Cesium.Math.toRadians(0)
 
@@ -75,6 +78,7 @@
           tileset.modelMatrix = m
         }
 
+        // 平移变换
         // 添加模型边界球
         function addBoundingSphere(tileset){
           var boundingSphere = tileset.boundingSphere
@@ -88,9 +92,9 @@
           })
         }
         tileset.readyPromise.then(function(tileset){
-          // changeHeight(tileset)
+          translation(tileset)
           // addBoundingSphere(tileset)
-          rotate(tileset)
+          // rotate(tileset)
         })
         viewer.zoomTo(tileset)
       })
