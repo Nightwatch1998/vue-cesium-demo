@@ -26,105 +26,73 @@
             url: 'Scene/pipeline1/tileset.json',
             maximumScreenSpaceError: 2,
             maximumNumberOfLoadedTiles: 1000,
-            // modelMatrix: mat4  //方法一，动态修改modelMatrix
         }));
         
 
 
         // 计算偏移量tileset.boundingSphere,在3dtile加载完毕才能访问
-        function change(tileset){
-          // 大地坐标
+        function changeHeight(tileset){
+          // 笛卡尔坐标转大地坐标
           var cartographic = Cesium.Cartographic.fromCartesian(tileset.boundingSphere.center)
-          // 边界球中心的坐标
-          var center = Cesium.Cartesian3.fromRadians(cartographic.longitude,cartographic.latitude,cartographic.height)
-          // console.log(center)
+          // 模型在地表中心位置
+          var surface = Cesium.Cartesian3.fromRadians(cartographic.longitude,cartographic.latitude,0)
           // 目标位置
-          var offset = Cesium.Cartesian3.fromRadians(cartographic.longitude,cartographic.latitude,500)
+          var target = Cesium.Cartesian3.fromRadians(cartographic.longitude,cartographic.latitude,1000)
           // 平移变换
-          // var translation = Cesium.Cartesian3.subtract(offset,center,new Cesium.Cartesian3())
-          var translation = new Cesium.Cartesian3(-center.x, -center.y, -center.z)
-          var translationMatrix = Cesium.Matrix4.fromTranslation(translation)
-
-          // 创建旋转矩阵
-          var rotationMatrix = Cesium.Matrix4.fromRotationTranslation(
-            Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(30)), // 30度的旋转
-            Cesium.Cartesian3.ZERO
-          )
-          // 旋转变换
-          var modelMatrix = Cesium.Matrix4.multiply(rotationMatrix, translationMatrix, new Cesium.Matrix4());
-
+          var offset = Cesium.Cartesian3.subtract(target,surface,new Cesium.Cartesian3())
           // 应用变换
-          tileset.modelMatrix = modelMatrix
-
-                  // 获取Tileset的包围球
-          // var boundingSphere = tileset.boundingSphere;
-
-          // // 创建一个可视化的包围球
-          // var boundingSphereEntity = viewer.entities.add({
-          //     position: boundingSphere.center,
-          //     ellipsoid: {
-          //         radii: new Cesium.Cartesian3(boundingSphere.radius, boundingSphere.radius, boundingSphere.radius),
-          //         material: Cesium.Color.RED.withAlpha(0.5),
-          //         outline: true,
-          //         outlineColor: Cesium.Color.RED
-          //     }
-          // });
+          tileset.modelMatrix = Cesium.Matrix4.fromTranslation(offset)
         }
 
-        // 旋转tileset
+        // 旋转tileset,连续变换需要用左乘
         function rotate(tileset){
+          // 获取模型中心位置的笛卡尔坐标
+          var center = tileset.boundingSphere.center;
+          console.log("平移前:",center)
+          // 将模型平移到球心
+          var backto_matrix = Cesium.Matrix4.fromTranslation(center)
+          var moveto_vec = Cesium.Cartesian3.multiplyByScalar(center,-1,new Cesium.Cartesian3())
+          var moveto_matrix = Cesium.Matrix4.fromTranslation(moveto_vec)
+
+          // 定义旋转方向
+          var angleX = Cesium.Math.toRadians(100)
+          var angleY = Cesium.Math.toRadians(0)
+          var angleZ = Cesium.Math.toRadians(0)
+
+          // console.log(trans1)
+          // 将模型旋转
+          var m1 = Cesium.Matrix4.fromRotation(Cesium.Matrix3.fromRotationX(angleX))
+          var m2 = Cesium.Matrix4.fromRotation(Cesium.Matrix3.fromRotationY(angleY))
+          var m3 = Cesium.Matrix4.fromRotation(Cesium.Matrix3.fromRotationZ(angleZ))
+          //  定义变换矩阵
+          var m = moveto_matrix
+          m = Cesium.Matrix4.multiply(m1,m,new Cesium.Matrix4())
+          m = Cesium.Matrix4.multiply(m2,m,new Cesium.Matrix4())
+          m = Cesium.Matrix4.multiply(m3,m,new Cesium.Matrix4())
+          // 再将模型平移到原来位置
+          // console.log(m)
+          m = Cesium.Matrix4.multiply(backto_matrix,m,new Cesium.Matrix4()) // 应用平移
+          tileset.modelMatrix = m
+        }
+
+        // 添加模型边界球
+        function addBoundingSphere(tileset){
           var boundingSphere = tileset.boundingSphere
-          // 创建一个计算模型中心的矩阵
-          var center = boundingSphere.center;
-          var translation = new Cesium.Cartesian3(-center.x, -center.y, -center.z);
-          var translationMatrix = Cesium.Matrix4.fromTranslation(translation);
-
-          // 创建一个旋转矩阵，以绕Y轴旋转30度（可根据需要更改角度）
-          var rotationMatrix = Cesium.Matrix4.fromRotationTranslation(
-              Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(0)), // 30度的旋转
-              Cesium.Cartesian3.ZERO
-          );
-
-          // 组合平移和旋转矩阵，以实现绕模型中心的旋转
-          var modelMatrix = Cesium.Matrix4.multiply(rotationMatrix, translationMatrix, new Cesium.Matrix4());
-
-          // 应用模型矩阵到Tileset
-          tileset.modelMatrix = modelMatrix;
+          var radius = boundingSphere.radius
+          var boundingSphereEntity = viewer.entities.add({
+            position: boundingSphere.center,
+            ellipsoid:{
+              radii: new Cesium.Cartesian3(radius,radius,radius),
+              material: Cesium.Color.RED.withAlpha(0.5)
+            }
+          })
         }
         tileset.readyPromise.then(function(tileset){
-          change(tileset)
-          // rotate(tileset)
+          // changeHeight(tileset)
+          // addBoundingSphere(tileset)
+          rotate(tileset)
         })
         viewer.zoomTo(tileset)
-
-        // // 使用材质
-        // var entity = viewer.entities.add({
-        //   position:Cesium.Cartesian3.fromDegrees(-103.0,40.0),
-        //   ellipse:{
-        //     semiMajorAxis: 40000,
-        //     semiMinorAxis: 25000,
-        //     material: Cesium.Color.RED.withAlpha(0.5) // 定义时指定
-        //   }
-        // })
-        // var ellipse = entity.ellipse
-        // // 颜色纹理
-        // ellipse.material = Cesium.Color.LIGHTYELLOW  // 重新赋值
-        // // 棋盘纹理
-        // ellipse.material = new Cesium.CheckerboardMaterialProperty({
-        //   evenColor: Cesium.Color.WHITE,
-        //   oddColor: Cesium.Color.BLACK,
-        //   repeat: new Cesium.Cartesian2(4,4)
-        // })
-        // // 条纹纹理
-        // ellipse.material = new Cesium.StripeMaterialProperty({
-        //   evenColor: Cesium.Color.WHITE,
-        //   oddColor: Cesium.Color.BLACK,
-        //   repeat: 32,
-        //   offset: 20,
-        //   orientation: Cesium.StripeOrientation.VERTICAL
-        // })
-        //
-        // viewer.zoomTo(tileset)
       })
     }
   }
