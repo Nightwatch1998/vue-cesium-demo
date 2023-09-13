@@ -18,29 +18,46 @@
         Cesium.Ion.defaultAccessToken = DEFAULT_ACCESS_TOKEN
         var viewer = new Cesium.Viewer('container',{});
         var scene = viewer.scene
-        // 允许显示地下
+        var globe = scene.globe
+        // 允许查看地下视角
         scene.screenSpaceCameraController.enableCollisionDetection = false
+        // 设置图层透明
+        globe.translucency.enabled = true; // 允许透明
+        globe.undergroundColor = Cesium.Color.LIGHTSLATEGRAY;  // 地下颜色
+        // 根据目标与相机的距离设定透明度
+        globe.undergroundColorAlphaByDistance.near = 1000;
+        globe.undergroundColorAlphaByDistance.far = 1000000;
+        globe.undergroundColorAlphaByDistance.nearValue = 0;
+        globe.undergroundColorAlphaByDistance.farValue = 1;
+        globe.translucency.rectangle = Cesium.Rectangle.fromDegrees(
+          115.0,
+          35.0,
+          120.0,
+          40.0
+        );
         // 加载数据集  默认位置 117.52160102,38.56303501
         var tileset = viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
             // url: 'Scene/testm3DTiles.json',
             // url: 'Scene/GD/tileset.json',
-            url: 'Scene/ALL/tileset.json',
+            url: 'Scene/Pipeline/tileset.json',
             maximumScreenSpaceError: 2,
             maximumNumberOfLoadedTiles: 1000,
         }));
         
 
         // 计算偏移量tileset.boundingSphere,在3dtile加载完毕才能访问
+        // 
         function translation(tileset){
           // 笛卡尔坐标转大地坐标
           var cartographic = Cesium.Cartographic.fromCartesian(tileset.boundingSphere.center)
           // console.log(cartographic)
           // 模型在地表中心位置
           var surface = Cesium.Cartesian3.fromRadians(cartographic.longitude,cartographic.latitude,0)
-          // 目标位置
-          var lon = Cesium.Math.toRadians(117.87388205)
-          var lat = Cesium.Math.toRadians(38.94105403)
-          var target = Cesium.Cartesian3.fromRadians(lon,lat,0)
+          // 第一次生成的模型ALL/tileset.json中心位置不对,目标位置坐标修正,117.87388205,38.94105403
+          // var lon = Cesium.Math.toRadians(117.87388205)
+          // var lat = Cesium.Math.toRadians(38.94105403)
+          // var target = Cesium.Cartesian3.fromRadians(lon,lat,0)
+          var target = Cesium.Cartesian3.fromRadians(cartographic.longitude,cartographic.latitude,-20)
           // 平移变换
           var offset = Cesium.Cartesian3.subtract(target,surface,new Cesium.Cartesian3())
           // 应用变换
