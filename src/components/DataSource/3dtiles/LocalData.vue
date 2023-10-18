@@ -46,7 +46,6 @@
         
 
         // 计算偏移量tileset.boundingSphere,在3dtile加载完毕才能访问
-        // 
         function translation(tileset){
           // 笛卡尔坐标转大地坐标
           var cartographic = Cesium.Cartographic.fromCartesian(tileset.boundingSphere.center)

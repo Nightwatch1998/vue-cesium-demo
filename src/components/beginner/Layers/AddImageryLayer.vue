@@ -7,7 +7,10 @@
   import { ref, watch, onMounted } from 'vue'
   import { DEFAULT_ACCESS_TOKEN } from '@/utils/const.js'
   import { tdtProvider }  from '@/utils/imageryProviders.js'
-  import { geoserverWMSProvider, geoserverWMTSProvider }  from '@/utils/imageryProviders.js'
+  import { 
+    geoserverWMSProvider, 
+    geoserverWMTSProvider
+  }  from '@/utils/imageryProviders.js'
 
   export default {
     components: {},
@@ -19,9 +22,12 @@
         // 离线地图
         
         var viewer = new Cesium.Viewer('container',{
-          imageryProvider: geoserverWMTSProvider,
+          imageryProvider: tdtProvider,
           baseLayerPicker: false, // 同时要禁用图层选择器
         })
+
+        // 添加电子航道图
+        viewer.imageryLayers.addImageryProvider(geoserverWMSProvider)
 
         // 创建图层并添加到picker中
         // addProviderViewModel({
@@ -42,6 +48,18 @@
           }))
         }
         // viewer.baseLayerPicker.viewModel.imageryProviderViewModels.removeAll()
+        viewer.camera.flyTo({
+          destination : Cesium.Cartesian3.fromDegrees(117.63,39.01, 15000.0), // 设置位置
+          orientation: {
+            heading : Cesium.Math.toRadians(0.0), // 方向
+            pitch : Cesium.Math.toRadians(-90.0),// 倾斜角度
+            roll: 0
+          },
+          duration: 5,
+          complete:function(){
+            console.log("相机飞行至指定位置")
+          }
+        })
       })
     }
   }

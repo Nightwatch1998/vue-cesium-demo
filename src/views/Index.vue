@@ -5,9 +5,9 @@
     <!-- <geometry></geometry> -->
     <!-- <model></model> -->
     <!-- <screen-space-event></screen-space-event> -->
-    <!-- <add-imagery-layer></add-imagery-layer> -->
+    <add-imagery-layer></add-imagery-layer>
     <!-- <add-gltf></add-gltf> -->
-    <local-data></local-data>
+    <!-- <local-data></local-data> -->
   </div>
 </template>
 <script>

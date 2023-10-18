@@ -46,6 +46,7 @@ const tdtProvider = new Cesium.WebMapTileServiceImageryProvider({
   subdomains: ["t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7"],
   credit: "天地图" // 来源标识
 })
+
 // 注记图层
 const tdtLabelProvider = new Cesium.WebMapTileServiceImageryProvider({
   url:`http://{s}.tianditu.gov.cn/cva_w/wmts?tk=${TDT_ACCESS_KEY}`,
@@ -60,8 +61,8 @@ const tdtLabelProvider = new Cesium.WebMapTileServiceImageryProvider({
 
 // 本地发布的WMS服务,layers可选countries、SR_50M、basemap
 const geoserverWMSProvider = new Cesium.WebMapServiceImageryProvider({
-  url: 'http://localhost:8080/geoserver/huyadish/wms',
-  layers: 'huyadish:countries',
+  url: 'http://localhost:8080/geoserver/HHIENC/wms',
+  layers: 'HHIENC:HHIENC',
   parameters: {
     service: 'WMS',
     // 这里要看geoserver发布服务支持的格式,png、gif、jpeg
